@@ -1,0 +1,24 @@
+﻿
+@page "/todo"
+
+<ul>
+    <h3>Todo (@todos.Count(todo => !todo.IsDone))</h3>
+    @foreach (var todo in todos)
+    {
+        <li>@todo.Title</li>
+        <li>@todo.IsDone</li>
+    }
+</ul>
+
+<input @bind="@newTodo" placeholder="Something todo" />
+<button @onclick="newToDo">Add todo</button>
+
+@code {
+    private List<TodoItem> todos = new();
+    private string? newTodo;
+    private void newToDo()
+    {
+        todos.Add(new TodoItem { Title = newTodo });
+      
+    }
+}

@@ -1,0 +1,41 @@
+﻿@page "/categories"
+@using Expense_Tracker.Pages.Class;
+
+<h3>Categories</h3>
+<ul>
+	
+	@foreach (var todo in categories)
+	{
+		<li >
+			@todo.Name
+			<button @onclick="()=>deleteCategosy(todo)">Delete</button>
+		</li>
+		
+	}
+</ul>
+<input @bind="userInput"/>
+<button @onclick="NewCategory">Add new category</button>
+@code {
+	private int id=3;
+	private string userInput;
+	public List<Category> categories = new List<Category>()
+	{
+		new Category { id = 1, Name = "Food" },
+		new Category { id = 2, Name = "House" },
+		new Category { id = 3, Name = "Entertainment" }
+	};
+	public void NewCategory()
+	{
+		this.id += 1;
+		categories.Add(new Category { id = id, Name = userInput });
+	}
+	public void deleteCategosy(Category todo)
+	{
+		int index = categories.IndexOf(todo);
+		if (index != -1)
+		{
+			categories.RemoveAt(index);
+		}
+	}
+
+}
