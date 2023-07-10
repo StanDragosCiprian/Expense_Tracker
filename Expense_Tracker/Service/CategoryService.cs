@@ -17,7 +17,7 @@ namespace Expense_Tracker.Service
 		{
 			return _context.Categories.ToList();
 		}
-		public Category AddUser(Category category)
+		public Category AddCategory(Category category)
 		{
 			_context.Categories.Add(category);
 			_context.SaveChanges();
@@ -25,7 +25,7 @@ namespace Expense_Tracker.Service
 			return category;
 		}
 		
-		public void DeleteUser(int id)
+		public void DeleteCategory(int id)
 		{
 			try
 			{

@@ -10,7 +10,7 @@
 		@foreach (var category in service.GetCategories())
 		{
 			<li>@category.Name</li>
-			<button @onclick="()=>deleteCategosy(category.Id)">Add new category</button>
+			<button @onclick="()=>deleteCategosy(category.Id)">Delete</button>
 		}
 	</ul>
 </ul>
@@ -20,22 +20,13 @@
 
 
 	private string userInput;
-
-
-	//public List<Category> categories = new List<Category>()
-	//{
-	//	new Category { Id = 1, Name = "Food" },
-	//	new Category { Id = 2, Name = "House" },
-	//	new Category { Id = 3, Name = "Entertainment" }
-	//};
 	public void NewCategory()
 	{
-
-		service.AddUser(new Category { Name = userInput });
+		service.AddCategory(new Category { Name = userInput });
 	}
 	public void deleteCategosy(int id)
 	{
-		service.DeleteUser(id);
+		service.DeleteCategory(id);
 
 	}
 
