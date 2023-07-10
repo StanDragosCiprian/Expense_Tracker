@@ -1,6 +1,8 @@
 using Expense_Tracker.Data;
+using Expense_Tracker.Service;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddDbContext<ExpenseTrackerContext>(options =>
+
+    options.UseNpgsql(builder.Configuration.GetConnectionString("ExpenseTrackerDatabase")));
 
 var app = builder.Build();
 
