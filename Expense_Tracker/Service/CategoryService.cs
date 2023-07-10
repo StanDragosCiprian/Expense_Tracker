@@ -1,5 +1,6 @@
 ﻿using Expense_Tracker.Data;
 using Expense_Tracker.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Expense_Tracker.Service
 {
@@ -16,5 +17,36 @@ namespace Expense_Tracker.Service
 		{
 			return _context.Categories.ToList();
 		}
+		public Category AddUser(Category category)
+		{
+			_context.Categories.Add(category);
+			_context.SaveChanges();
+
+			return category;
+		}
+		
+		public void DeleteUser(int id)
+		{
+			try
+			{
+				Category? category = _context.Categories.Find(id);
+				if (category != null)
+				{
+					_context.Categories.Remove(category);
+					_context.SaveChanges();
+				}
+				else
+				{
+					throw new ArgumentNullException();
+				}
+			}
+			catch
+			{
+				throw;
+			}
+		}
 	}
+
+
 }
+

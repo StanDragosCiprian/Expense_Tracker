@@ -8,6 +8,7 @@ namespace Expense_Tracker.Data
 		{
 		}
 		public virtual DbSet<Category>Categories { get; set; }
+		public object Category { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
