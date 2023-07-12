@@ -1,0 +1,16 @@
+﻿@page "/income/new";
+@using Expense_Tracker.Service;
+@using Expense_Tracker.Data.Models;
+@inject IncomeService service;
+@inject NavigationManager NavigationManager;
+<h3>AddIcome</h3>
+<IncomeForm income="incomes" />
+<button @onclick="()=>AddNewExpenses(incomes)" class="btn btn-primary">Save</button>
+@code {
+    public Expense_Tracker.Data.Models.Income incomes { set; get; } = new Data.Models.Income() { Date=DateTime.UtcNow };
+    public void AddNewExpenses( Expense_Tracker.Data.Models.Income incomes)
+    {
+        service.AddIncomes(incomes);
+        NavigationManager.NavigateTo("/incom");
+    }
+}

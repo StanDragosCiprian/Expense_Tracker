@@ -1,0 +1,41 @@
+﻿@page "/expense/new"
+@using Expense_Tracker.Service;
+@using Expense_Tracker.Data.Models;
+@inject ExpenseService service;
+@inject NavigationManager NavigationManager;
+@*<div class="form-group">
+    <label for="exampleInputEmail1">Title</label>
+    <input type="text" class="form-control" placeholder="Title" @bind="title">
+</div>
+<div class="form-group">
+    <label for="exampleInputPassword1">Date</label>
+    <input type="date" class="form-control" id="exampleInputPassword1" placeholder="Date" @bind="date">
+</div>
+
+<div class="form-group">
+    <label for="exampleInputEmail1">Amount</label>
+    <input type="number" class="form-control" placeholder="Amount" @bind="amount">
+</div>
+
+<div class="form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1" @bind="planned">
+    <label class="form-check-label" for="exampleCheck1">Planned</label>
+</div>
+
+<div class="form-group">
+    <label for="exampleInputEmail1">CategoryId</label>
+    <input type="number" class="form-control" placeholder="CategoryId" @bind="categoryId">
+</div>*@
+<ExpenseForm expense="expend"/>
+<button type="submit" class="btn btn-primary" @onclick="()=>AddNewExpenses(expend)">Submit</button>
+
+
+@code {
+
+    Data.Models.Expense expend = new Data.Models.Expense() { Date = DateTime.UtcNow };
+    public void AddNewExpenses(Data.Models.Expense expend)
+    {
+        service.AddExpensesy(expend);
+        NavigationManager.NavigateTo("/expense");
+    }
+}

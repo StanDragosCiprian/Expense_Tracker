@@ -1,0 +1,26 @@
+﻿@using Expense_Tracker.Service;
+@using Expense_Tracker.Data.Models;
+@inject ExpenseService service;
+@page "/expense/update/{id:int}"
+@inject NavigationManager NavigationManager;
+<h3>UpdateExpense</h3>
+<ExpenseForm expense="expend" />
+<button type="submit" class="btn btn-primary" @onclick="()=>UpdateExpenses(expend)">Save</button>
+
+@code {
+    Data.Models.Expense expend;
+
+    [Parameter]
+    public int id{ get; set; }
+
+    protected override  void OnInitialized()
+    {
+        expend = service.getOneById(id);
+    }
+
+    public void UpdateExpenses( Expense_Tracker.Data.Models.Expense expense)
+    {
+        service.update(expense);
+        NavigationManager.NavigateTo("/expense");
+    }
+}

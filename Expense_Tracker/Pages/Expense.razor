@@ -1,0 +1,61 @@
+﻿@page "/expense";
+@using Expense_Tracker.Service;
+@using Expense_Tracker.Data.Models;
+@inject ExpenseService service;
+@inject NavigationManager NavigationManager;
+<h3>Expense</h3>
+@*<ul>
+	<ul>
+		@foreach (var category in service.GetExpenses())
+		{
+			<li>@category.Title</li>
+			<button @onclick="()=>deleteCategosy(category.Id)" class="btn btn-primary">Delete</button>
+		}
+	</ul>
+</ul>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Data</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Planned</th>
+            <th scope="col">CategoryId</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var expense in service.GetExpenses())
+        {
+            <tr>
+                <th scope="row">@expense.Id</th>
+                <td>@expense.Title</td>
+                <td>@expense.Date</td>
+                <td>@expense.Amount</td>
+                <td>@expense.Planned</td>
+                <td>@expense.CategoryId</td>
+               <td><button @onclick="()=>UpdateExpensesRedirect(expense.Id)" class="btn btn-primary">Edit</button></td>
+               <td><button @onclick="()=>deleteCategosy(expense.Id)" class="btn btn-primary">Delete</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button @onclick="NewExpensesRedirect" class="btn btn-primary">Add new category</button>
+@code {
+    public string userInput;
+    public void NewExpensesRedirect()
+    {
+        NavigationManager.NavigateTo("/expense/new");
+    }
+    public void UpdateExpensesRedirect(int i)
+    {
+        NavigationManager.NavigateTo("/expense/update/" + i.ToString() + "");
+    }
+	public void deleteCategosy(int id)
+	{
+		service.DeleteExpense(id);
+
+	}
+}

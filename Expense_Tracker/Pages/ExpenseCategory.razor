@@ -1,0 +1,40 @@
+﻿@page "/expense/category/{id:int}"
+@using Expense_Tracker.Service;
+@using Expense_Tracker.Data.Models;
+@inject ExpenseService service;
+
+<h3>Cheltuieli</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Data</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Planned</th>
+            <th scope="col">CategoryId</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var expense in service.GetExpensesByCategory(id))
+        {
+            <tr>
+                <th scope="row">@expense.Id</th>
+                <td>@expense.Title</td>
+                <td>@expense.Date</td>
+                <td>@expense.Amount</td>
+                <td>@expense.Planned</td>
+                <td>@expense.CategoryId</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+	[Parameter]
+	public int id { set; get; }
+    
+}
+

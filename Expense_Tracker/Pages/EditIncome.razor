@@ -1,0 +1,22 @@
+﻿@page "/income/update/{id:int}"
+@using Expense_Tracker.Service;
+@using Expense_Tracker.Data.Models;
+@inject IncomeService service;
+@inject NavigationManager NavigationManager;
+<h3>IcomeUpdate</h3>
+<IncomeForm income="incomes" />
+<button @onclick="()=>update(incomes)" class="btn btn-primary">Save</button>
+@code {
+	[Parameter] public int id { set; get; }
+	Data.Models.Income incomes { set; get; } = new Data.Models.Income() { Date = DateTime.UtcNow };
+
+	protected override void OnInitialized()
+	{
+		incomes = service.getOneById(id);
+	}
+	public void update(Data.Models.Income income)
+	{
+		service.update(income);
+		NavigationManager.NavigateTo("/incom");
+	}
+}

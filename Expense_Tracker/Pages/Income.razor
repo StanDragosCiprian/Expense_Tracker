@@ -1,0 +1,47 @@
+﻿@page "/incom"
+@using Expense_Tracker.Service;
+@using Expense_Tracker.Data.Models;
+@inject IncomeService service;
+@inject NavigationManager NavigationManager;
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Title</th>
+			<th scope="col">Data</th>
+			<th scope="col">Amount</th>
+			<th scope="col">Type</th>
+			<th scope="col">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var expense in service.getIncomes())
+		{
+			<tr>
+				<th scope="row">@expense.Id</th>
+				<td>@expense.Title</td>
+				<td>@expense.Date</td>
+				<td>@expense.Amount</td>
+				<td>@expense.type</td>
+
+				<td><button @onclick="()=>update(expense.Id)" class="btn btn-primary">Edit</button></td>
+				<td><button @onclick="()=>deleteCategosy(expense.Id)" class="btn btn-primary">Delete</button></td>
+			</tr>
+		}
+	</tbody>
+</table>
+<button @onclick="addNew" class="btn btn-primary">Add</button>
+@code {
+	public void addNew()
+	{
+		NavigationManager.NavigateTo("/income/new");
+	}
+	public void update(int id)
+	{
+		NavigationManager.NavigateTo("/income/update/" + id);
+	}
+	public void deleteCategosy(int id)
+	{
+		service.DeleteIncome(id);
+	}
+}
