@@ -4,15 +4,22 @@
 @inject ExpenseService service;
 @inject NavigationManager NavigationManager;
 <h3>Expense</h3>
-@*<ul>
-	<ul>
-		@foreach (var category in service.GetExpenses())
-		{
-			<li>@category.Title</li>
-			<button @onclick="()=>deleteCategosy(category.Id)" class="btn btn-primary">Delete</button>
-		}
-	</ul>
-</ul>*@
+
+
+<select @onchange="(e)=> isPlanned=e.Value.ToString()" class="form-select">
+    <option value="All plan">All plan</option>
+    <option value="Plannes">Plannes</option>
+    <option value="UnPlannes">UnPlannes</option>
+</select>
+<h1>Balance</h1>
+@if (@sum(service.getPlanned(isPlanned)) > 0)
+{
+    <p class="text-center text-success">@sum(service.getPlanned(isPlanned))</p>
+}
+else
+{
+    <p class="text-center text-danger">@sum(service.getPlanned(isPlanned))</p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -26,25 +33,30 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var expense in service.GetExpenses())
+        @foreach (var expense in service.getPlanned(isPlanned))
         {
-            <tr>
-                <th scope="row">@expense.Id</th>
-                <td>@expense.Title</td>
-                <td>@expense.Date</td>
-                <td>@expense.Amount</td>
-                <td>@expense.Planned</td>
-                <td>@expense.CategoryId</td>
-               <td><button @onclick="()=>UpdateExpensesRedirect(expense.Id)" class="btn btn-primary">Edit</button></td>
-               <td><button @onclick="()=>deleteCategosy(expense.Id)" class="btn btn-primary">Delete</button></td>
-            </tr>
+                <tr>
+                    <th scope="row">@expense.Id</th>
+                    <td>@expense.Title</td>
+                    <td>@expense.Date</td>
+                    <td>@expense.Amount</td>
+                    <td>@expense.Planned</td>
+                    <td>@expense.CategoryId</td>
+                    <td><button @onclick="()=>UpdateExpensesRedirect(expense.Id)" class="btn btn-primary">Edit</button></td>
+                    <td><button @onclick="()=>deleteCategosy(expense.Id)" class="btn btn-primary">Delete</button></td>
+                </tr>
         }
     </tbody>
 </table>
 
 <button @onclick="NewExpensesRedirect" class="btn btn-primary">Add new category</button>
 @code {
-    public string userInput;
+    public string isPlanned { set; get; } = "All plan";
+    public int sumExpens{ set; get; }
+    public int sum(List<Data.Models.Expense> exp)
+    {
+       return exp.Sum(i => i.Amount);
+    }
     public void NewExpensesRedirect()
     {
         NavigationManager.NavigateTo("/expense/new");

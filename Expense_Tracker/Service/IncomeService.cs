@@ -16,13 +16,47 @@ namespace Expense_Tracker.Service
 
         public List<Income> getIncomes()
         {
+            
             return _context.Incomes.ToList();
         }
-
-        public Income AddIncomes(Income income)
+        public int sum()
         {
-    
-            _context.Incomes.Add(income);
+            return _context.Incomes.Sum(i => i.Amount);
+		}
+		public DateOnly minDate()
+		{
+			DateOnly dateOnly = DateOnly.FromDateTime(_context.Incomes.Min(i => i.Date));
+			return dateOnly;
+		}
+		public DateOnly maxDate()
+		{
+			DateOnly dateOnly = DateOnly.FromDateTime(_context.Incomes.Max(i => i.Date));
+			return dateOnly;
+		}
+		public int currentMothSum()
+		{
+			int currentMonth = DateTime.Now.Month;
+			int currentYear = DateTime.Now.Year;
+
+			int sum = _context.Incomes
+				.Where(i => i.Date.Month == currentMonth && i.Date.Year == currentYear)
+				.Sum(i => i.Amount);
+
+
+			return sum;
+		}
+		public List<Income> filterByDate(DateTime start, DateTime end)
+		{
+			DateTime startDate = start.Date.ToUniversalTime();
+			DateTime endDate = end.ToUniversalTime();
+			return _context.Incomes.Where(i => i.Date >= startDate && i.Date <= endDate).ToList();
+		}
+
+
+		public Income AddIncomes(Income income)
+        {
+			income.Date = income.Date.ToUniversalTime();
+			_context.Incomes.Add(income);
             _context.SaveChanges();
 
             return income;

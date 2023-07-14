@@ -12,11 +12,15 @@ namespace Expense_Tracker.Service
         {
             _context = context;
         }
-		
 		public List<Category> GetCategories()
 		{
 			return _context.Categories.ToList();
 		}
+		public Category categoryName(int categoryId)
+		{
+			return _context.Categories.FirstOrDefault(i => i.Id == categoryId);
+		}
+
 		public Category AddCategory(Category category)
 		{
 			_context.Categories.Add(category);

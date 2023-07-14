@@ -3,6 +3,28 @@
 @using Expense_Tracker.Data.Models;
 @inject IncomeService service;
 @inject NavigationManager NavigationManager;
+<h1>Incom</h1>
+
+<h1>Balance</h1>
+@if (@sum(service.filterByDate(startDate, endDate)) > 0)
+{
+	<p class="text-center text-success">
+		@sum(service.filterByDate(startDate, endDate))</p>
+}
+else
+{
+	<p class="text-center text-danger">@sum(service.filterByDate(startDate, endDate))</p>
+}
+
+<div class="form-group">
+	<label for="exampleInputPassword1">Date</label>
+	<input type="date" class="form-control" id="exampleInputPassword1" placeholder="Date" @bind="startDate">
+</div>
+<div class="form-group">
+	<label for="exampleInputPassword1">Date</label>
+	<input type="date" class="form-control" id="exampleInputPassword1" placeholder="Date" @bind="endDate">
+</div>
+
 <table class="table">
 	<thead>
 		<tr>
@@ -15,7 +37,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var expense in service.getIncomes())
+		@foreach (var expense in service.filterByDate(startDate, endDate))
 		{
 			<tr>
 				<th scope="row">@expense.Id</th>
@@ -32,6 +54,12 @@
 </table>
 <button @onclick="addNew" class="btn btn-primary">Add</button>
 @code {
+	public DateTime startDate { set; get; } = DateTime.UtcNow.AddYears(-1);
+	public DateTime endDate { set; get; } = DateTime.UtcNow;
+	public int sum(List<Data.Models.Income> incom)
+	{
+		return incom.Sum(i => i.Amount);
+	}
 	public void addNew()
 	{
 		NavigationManager.NavigateTo("/income/new");

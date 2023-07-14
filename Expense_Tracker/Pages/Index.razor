@@ -1,9 +1,90 @@
 ﻿@page "/"
+@using Expense_Tracker.Service;
+@using Expense_Tracker.Data.Models;
+@inject IncomeService service;
+@inject ExpenseService serviceExpense;
+@inject CategoryService serviceCategory;
+@inject NavigationManager NavigationManager;
+<PageTitle>Home</PageTitle>
 
-<PageTitle>Index</PageTitle>
+<div class="container bg-light">
+	<h1 class="display-1 text-center">Expense Tracker</h1>
+	<p class="text-center">Welcome to your new expense tracking app</p>
+	<h3 class="text-center">Balance</h3>
+	<div class="row">
+		<div class="custom-card">
+			<BalanceCard name="Balance" value="@Balance()" />
+		</div>
+		<div class="custom-card">
+			<BalanceCard name="Expense" value="@serviceExpense.sum()" />
+		</div>
+		<div class="custom-card">
+			<BalanceCard name="Income" value="@service.sum()" />
+		</div>
+	</div>
 
-<h1>Hello, world!</h1>
-<h1>Hello </h1>
-Welcome to your new app.
-<Counter InserCount=5/>
-<SurveyPrompt Title="How is Blazor working for you? I don t know " />
+
+	
+
+	<h3 class="text-center">Incomes</h3>
+	<table class="table table-bordered">
+		<tr>
+			<th>Date range</th>
+			<th>Amount</th>
+		</tr>
+		<tr>
+			<td>@service.minDate() - @service.maxDate()</td>
+			<td>@service.sum() LEI</td>
+		</tr>
+		<tr>
+			<td>Current month</td>
+			<td>@service.currentMothSum()</td>
+		</tr>
+		<tr>
+			<td>Plande</td>
+			<td>@serviceExpense.planed()</td>
+		</tr>
+
+	</table>
+
+
+	<h3 class="text-center">Expenses</h3>
+	<table class="table table-bordered">
+		<tr>
+			<th>Date range</th>
+			<th>Amount</th>
+		</tr>
+		<tr>
+			<td>@serviceExpense.minDate() - @serviceExpense.maxDate()</td>
+			<td>@serviceExpense.sum() LEI</td>
+
+		</tr>
+		<tr>
+
+			<td>Current month</td>
+			<td>@serviceExpense.currentMothSum()</td>
+
+		</tr>
+		<tr>
+			<td>Plande</td>
+			<td>@serviceExpense.planed()</td>
+		</tr>
+		<tr>
+			<td>Big Amount</td>
+			<td>@serviceCategory.categoryName(serviceExpense.maxCategory()).Name</td>
+		</tr>
+	</table>
+
+</div>
+
+
+@code {
+	public int Expenses { set; get; }
+	public int income { set; get; }
+
+	public int Balance()
+	{
+		return @serviceExpense.sum() - @service.sum();
+	}
+
+}
